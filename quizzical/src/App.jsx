@@ -11,7 +11,9 @@ function App() {
   };
 
   return (
-    <>{!quizStarted ? <Quizzical startQuiz={startQuiz} /> : <Questions />}</>
+    <main>
+      {!quizStarted ? <Quizzical startQuiz={startQuiz} /> : <Questions />}
+    </main>
   );
 }
 
