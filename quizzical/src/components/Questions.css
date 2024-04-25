@@ -1,0 +1,14 @@
+.answers {
+    display: flex;
+    gap: 0.625rem;
+}
+
+.container {
+    border-bottom: 1px solid #DBDEF0;
+    padding-bottom: 1rem;
+}
+
+.questions {
+    width: 500px;
+    height: auto;
+}

@@ -1,7 +1,9 @@
+import "./Question.css";
+
 function Question(props) {
   return (
     <>
-      <p>{props.question}</p>
+      <h2 className="question">{props.question}</h2>
     </>
   );
 }

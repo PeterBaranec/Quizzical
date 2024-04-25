@@ -1,0 +1,22 @@
+input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+}
+
+label {
+    font-size: .64rem;
+    display: inline-block;
+    color: #293264;
+    background-color: #fff;
+    padding: 5px 10px;
+    font-family: sans-serif, Arial;
+    border: 1px solid #4D5B9E;
+    border-radius: 7.94px;
+}
+
+
+input[type="radio"]:checked+label {
+    background-color: #D6DBF5;
+    border-color: #D6DBF5;
+}
