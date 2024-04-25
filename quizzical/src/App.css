@@ -7,7 +7,7 @@
 main {
   position: relative;
   width: 550px;
-  height: auto;
+  height: 700px;
   background: url(./assets/magicpattern-blob-bottom.png) top right no-repeat,
     url(./assets/magicpattern-blob-top.png) bottom left no-repeat;
 

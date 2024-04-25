@@ -21,30 +21,34 @@ function Questions() {
     return array;
   };
 
-  const fetchQuestions = async () => {
-    try {
-      const res = await fetch(
-        "https://opentdb.com/api.php?amount=5&type=multiple"
-      );
-      const data = await res.json();
-      setQuizData({
-        ...quizData,
-        questions: data.results.map((question) => ({
-          ...question,
-          incorrect_answers: shuffleArray([
-            ...question.incorrect_answers,
-            question.correct_answer,
-          ]),
-        })),
-      });
-    } catch (error) {
-      console.error("Error fetching questions:", error);
-    }
-  };
+  const [loading, setLoading] = useState(true);
+  const API_URL = "https://opentdb.com/api.php?amount=5&type=multiple";
 
   useEffect(() => {
     const controller = new AbortController();
+    const fetchQuestions = async () => {
+      try {
+        const res = await fetch(API_URL, { signal: controller.signal });
+        const data = await res.json();
+        setQuizData({
+          ...quizData,
+          questions: data.results.map((question) => ({
+            ...question,
+            incorrect_answers: shuffleArray([
+              ...question.incorrect_answers,
+              question.correct_answer,
+            ]),
+          })),
+        });
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+        setLoading(false);
+      }
+    };
+
     fetchQuestions();
+
     return () => {
       controller.abort();
     };
@@ -73,7 +77,7 @@ function Questions() {
 
   return (
     <div className="questions">
-      {!quizData.questions.length ? (
+      {loading ? (
         "Loading..."
       ) : (
         <>
@@ -91,6 +95,7 @@ function Questions() {
                       selectedAnswers[question.question] ===
                       question.correct_answer
                     }
+                    isCorrectAnswer={answer === question.correct_answer}
                     onSelect={() =>
                       handleAnswerSelection(question.question, answer)
                     }
@@ -100,13 +105,15 @@ function Questions() {
               </div>
             </div>
           ))}
-          <button onClick={checkAnswers}>Check Answers</button>
-          {showResults && (
-            <p>
-              Number of correct answers: {quizData.correctGuesses} out of{" "}
-              {quizData.questions.length}
-            </p>
-          )}
+          <div className="flex">
+            <button onClick={checkAnswers}>Check Answers</button>
+            {showResults && (
+              <p>
+                Number of correct answers: {quizData.correctGuesses} out of{" "}
+                {quizData.questions.length}
+              </p>
+            )}
+          </div>
         </>
       )}
     </div>

@@ -12,3 +12,12 @@
     width: 500px;
     height: auto;
 }
+
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    padding-block: 1rem;
+}

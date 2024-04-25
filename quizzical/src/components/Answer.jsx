@@ -7,6 +7,7 @@ function Answer({
   isCorrect,
   onSelect,
   showResults,
+  isCorrectAnswer,
 }) {
   const styles = {
     backgroundColor: showResults
@@ -25,8 +26,13 @@ function Answer({
         name={name}
         checked={isSelected}
         onChange={onSelect}
+        disabled={showResults ? true : false}
       />
-      <label htmlFor={answer} style={styles}>
+      <label
+        htmlFor={answer}
+        style={styles}
+        className={showResults ? (isCorrectAnswer ? "green" : "") : ""}
+      >
         {answer}
       </label>
     </>
