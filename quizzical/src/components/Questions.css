@@ -13,7 +13,7 @@
     height: auto;
 }
 
-.flex {
+.flex__flow {
     display: flex;
     justify-content: center;
     align-items: center;

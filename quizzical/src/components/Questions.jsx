@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Question from "./Question";
 import Answer from "./Answer";
 import "./Questions.css";
+import { motion } from "framer-motion";
 
 function Questions() {
   const [quizData, setQuizData] = useState({
@@ -11,6 +12,8 @@ function Questions() {
 
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [showResults, setShowResults] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [newQuizz, setNewQuizz] = useState(true);
 
   // Function to shuffle an array
   const shuffleArray = (array) => {
@@ -21,7 +24,6 @@ function Questions() {
     return array;
   };
 
-  const [loading, setLoading] = useState(true);
   const API_URL = "https://opentdb.com/api.php?amount=5&type=multiple";
 
   useEffect(() => {
@@ -41,18 +43,21 @@ function Questions() {
           })),
         });
         setLoading(false);
+        setNewQuizz(false);
       } catch (error) {
         console.error("Error fetching questions:", error);
         setLoading(false);
       }
     };
 
-    fetchQuestions();
+    if (newQuizz) {
+      fetchQuestions();
+    }
 
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [newQuizz]);
 
   const handleAnswerSelection = (question, answer) => {
     setSelectedAnswers({
@@ -75,8 +80,19 @@ function Questions() {
     setShowResults(true);
   };
 
+  const startNewQuizz = () => {
+    setShowResults(false);
+    setNewQuizz(true);
+    setSelectedAnswers({});
+  };
+
   return (
-    <div className="questions">
+    <motion.div
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+      className="questions"
+    >
       {loading ? (
         "Loading..."
       ) : (
@@ -105,18 +121,40 @@ function Questions() {
               </div>
             </div>
           ))}
-          <div className="flex">
-            <button onClick={checkAnswers}>Check Answers</button>
+          <div className="flex__flow">
+            {showResults ? (
+              <motion.button
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+                onClick={startNewQuizz}
+              >
+                New Quizz
+              </motion.button>
+            ) : (
+              <motion.button
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+                onClick={checkAnswers}
+              >
+                Check Answers
+              </motion.button>
+            )}
             {showResults && (
-              <p>
+              <motion.p
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: "easeOut", delay: 0.1 }}
+              >
                 Number of correct answers: {quizData.correctGuesses} out of{" "}
                 {quizData.questions.length}
-              </p>
+              </motion.p>
             )}
           </div>
         </>
       )}
-    </div>
+    </motion.div>
   );
 }
 
